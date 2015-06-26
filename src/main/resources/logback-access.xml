@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+
+    <filter class="ch.qos.logback.access.filter.CountingFilter">
+        <name>countingFilter</name>
+    </filter>
+
+    <appender name="accessfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/application-access.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_PATH}/archived/application-access.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 10MB -->
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- keep 60 files log history -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.access.PatternLayoutEncoder">
+            <pattern>%clientHost %user %date "%r" statusCode=%statusCode %bytesSent elapsedTime=%elapsedTime</pattern>
+        </encoder>
+    </appender>
+
+    <appender-ref ref="accessfile"/>
+
+</configuration>

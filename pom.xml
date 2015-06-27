@@ -41,7 +41,7 @@
 
         <clover.version>4.0.3</clover.version>
 
-        <activemq.version>5.11.1</activemq.version>
+        <activemq.version>5.10.2</activemq.version>
 
     </properties>
 
@@ -125,12 +125,12 @@
             <version>${commons-lang3.version}</version>
         </dependency>
 
-        <!-- ActiveMQ Artifacts -->
+
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-spring</artifactId>
-            <version>${activemq.version}</version>
+            <artifactId>activemq-broker</artifactId>
         </dependency>
+
 
     </dependencies>
 

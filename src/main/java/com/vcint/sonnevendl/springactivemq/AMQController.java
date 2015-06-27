@@ -4,32 +4,32 @@ import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.jms.Queue;
+import javax.websocket.server.PathParam;
 
 /**
  * AMQController
  *
- * @author <a href="mailto:lorinc.sonnevend@betvictor.com">Lorinc Sonnevend</a>
- *         6/26/2015
  */
 @RestController
-@RequestMapping("test")
+@RequestMapping("send")
 public class AMQController {
 
     @Autowired
-    JmsMessageSender jmsMessageSender;
+    JmsTemplate jmsTemplate;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<String> some(){
-        jmsMessageSender.send("hello JMS");
-        Queue queue = new ActiveMQQueue("AnotherDest");
-        jmsMessageSender.send(queue, "hello Another Message");
-
-        return new ResponseEntity<>("AAAA", HttpStatus.OK);
+    @RequestMapping(value = "{text}",method = RequestMethod.GET)
+    public ResponseEntity<String> some(@PathVariable("text")final String text){
+        MessageCreator messageCreator = session -> session.createTextMessage(text);
+        jmsTemplate.send("mailbox-destination", messageCreator);
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
 

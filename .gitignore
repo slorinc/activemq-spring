@@ -12,7 +12,6 @@ dist
 TODO
 bin
 config
-clickthru.*.db
 logs
 logs/*
 *_IS_UNDEFINED*
